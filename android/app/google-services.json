@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1049778649099",
+    "firebase_url": "https://social-cycle-be8bd.firebaseio.com",
+    "project_id": "social-cycle-be8bd",
+    "storage_bucket": "social-cycle-be8bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049778649099:android:1ad93d215518f82f5aaf0e",
+        "android_client_info": {
+          "package_name": "com.example.abh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049778649099-ov0ntvhsa1flmj8j3p56tk2hnkldo8rt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBkpXf9xav_67wsf1ecObipw0O579oDsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049778649099-ov0ntvhsa1flmj8j3p56tk2hnkldo8rt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,10 +2,13 @@
 //import 'package:abh/counter.dart';
 import 'package:abh/home.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:swiggy_ui/views/home_donor.dart';
 //import './../home_donor.dart';
 //import './../home_bottom_navigation_screen.dart';
+import '../home.dart';
 import 'signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class WelcomeBackPage extends StatefulWidget {
   @override
@@ -13,10 +16,12 @@ class WelcomeBackPage extends StatefulWidget {
 }
 
 class _WelcomeBackPageState extends State<WelcomeBackPage> {
-  TextEditingController email =
-      TextEditingController(text: 'example@email.com');
+  bool loading = false;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
-  TextEditingController password = TextEditingController(text: '12345678');
+  TextEditingController email = TextEditingController();
+
+  TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,86 +52,62 @@ class _WelcomeBackPageState extends State<WelcomeBackPage> {
 
     // Row(
     //   children: [
-        
+
     //   ],
     // )
     Widget loginButton = Positioned(
       left: MediaQuery.of(context).size.width / 8,
-      bottom: 40,
+      bottom: 10,
       child: InkWell(
         onTap: () {
-          Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => MyApp2()));
+          setState(() {
+            loading = true;
+          });
+          _auth
+              .signInWithEmailAndPassword(
+                  email: email.text, password: password.text)
+              .then((value) => {
+                    print(value),
+                    setState(() {
+                      loading = false;
+                    }),
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyApp2(),
+                      ),
+                    )
+                  })
+              .catchError((onError) {
+            setState(() {
+              loading = false;
+              Fluttertoast.showToast(msg: 'No Record Found');
+            });
+          });
         },
         child: Container(
           width: MediaQuery.of(context).size.width / 1.5,
           height: 80,
           child: Center(
-              child: new Text("Login",
-                  style: const TextStyle(
-                      color: const Color(0xfffefefe),
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20.0))),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [
-                    Color.fromRGBO(236, 60, 3, 1),
-                    Color.fromRGBO(234, 60, 3, 1),
-                    Color.fromRGBO(216, 78, 16, 1),
-                  ],
-                  begin: FractionalOffset.topCenter,
-                  end: FractionalOffset.bottomCenter),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.16),
-                  offset: Offset(0, 5),
-                  blurRadius: 10.0,
-                )
-              ],
-              borderRadius: BorderRadius.circular(9.0)),
+            child: new Text(
+              "Login",
+              style: const TextStyle(
+                  color: const Color(0xfffefefe),
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 20.0),
+            ),
+          ),
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.16),
+              offset: Offset(0, 5),
+              blurRadius: 10.0,
+            )
+          ], borderRadius: BorderRadius.circular(9.0)),
         ),
       ),
     );
-
-    // Widget loginButton1 = Positioned(
-    //   left: MediaQuery.of(context).size.width / 2,
-    //   bottom: 40,
-    //   child: InkWell(
-    //     onTap: () {
-    //       // Navigator.of(context)
-    //       //     .push(MaterialPageRoute(builder: (_) => HomeBottomNavigationScreen()));
-    //     },
-    //     child: Container(
-    //       width: MediaQuery.of(context).size.width / 3.1,
-    //       height: 80,
-    //       child: Center(
-    //           child: new Text("NGO",
-    //               style: const TextStyle(
-    //                   color: const Color(0xfffefefe),
-    //                   fontWeight: FontWeight.w600,
-    //                   fontStyle: FontStyle.normal,
-    //                   fontSize: 20.0))),
-    //       decoration: BoxDecoration(
-    //           gradient: LinearGradient(
-    //               colors: [
-    //                 Color.fromRGBO(236, 60, 3, 1),
-    //                 Color.fromRGBO(234, 60, 3, 1),
-    //                 Color.fromRGBO(216, 78, 16, 1),
-    //               ],
-    //               begin: FractionalOffset.topCenter,
-    //               end: FractionalOffset.bottomCenter),
-    //           boxShadow: [
-    //             BoxShadow(
-    //               color: Color.fromRGBO(0, 0, 0, 0.16),
-    //               offset: Offset(0, 5),
-    //               blurRadius: 10.0,
-    //             )
-    //           ],
-    //           borderRadius: BorderRadius.circular(9.0)),
-    //     ),
-    //   ),
-    // );
 
     Widget loginForm = Container(
       height: 240,
@@ -147,6 +128,7 @@ class _WelcomeBackPageState extends State<WelcomeBackPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: TextField(
+                    decoration: InputDecoration(hintText: "Email"),
                     controller: email,
                     style: TextStyle(fontSize: 16.0),
                   ),
@@ -154,6 +136,7 @@ class _WelcomeBackPageState extends State<WelcomeBackPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: TextField(
+                    decoration: InputDecoration(hintText: "Password"),
                     controller: password,
                     style: TextStyle(fontSize: 16.0),
                     obscureText: true,
@@ -183,9 +166,8 @@ class _WelcomeBackPageState extends State<WelcomeBackPage> {
           ),
           InkWell(
             onTap: () {
-               Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => RegisterPage()));
-              
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => RegisterPage()));
             },
             child: Text(
               'Sign-Up',
@@ -201,40 +183,41 @@ class _WelcomeBackPageState extends State<WelcomeBackPage> {
     );
 
     return Scaffold(
-
-      body: Stack(
-        children: <Widget>[
-
-          // Container(
-          //   decoration: BoxDecoration(
-          //     image: DecorationImage(image: AssetImage('assets/background.jpg'),
-          //         fit: BoxFit.cover)
-          //   ),
-          // ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.lightBlueAccent,
-
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 28.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Stack(
               children: <Widget>[
-                Spacer(flex: 3),
-                welcomeBack,
-                Spacer(),
-                subTitle,
-                Spacer(flex: 2),
-                loginForm,
-                Spacer(flex: 2),
-                forgotPassword
+                // Container(
+                //   decoration: BoxDecoration(
+                //     image: DecorationImage(image: AssetImage('assets/background.jpg'),
+                //         fit: BoxFit.cover)
+                //   ),
+                // ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlueAccent,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Spacer(flex: 3),
+                      welcomeBack,
+                      Spacer(),
+                      subTitle,
+                      Spacer(flex: 2),
+                      loginForm,
+                      Spacer(flex: 2),
+                      forgotPassword
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 }

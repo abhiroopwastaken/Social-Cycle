@@ -16,13 +16,44 @@ class MyApp2 extends StatelessWidget {
     return Container(
       child: MaterialApp(
         home: Scaffold(
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                DrawerHeader(
+                  child: CircleAvatar(),
+                ),
+                Divider(
+                  thickness: 3,
+                ),
+                ListTile(
+                  title: Text("Account"),
+                  leading: Icon(Icons.supervised_user_circle),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text("Payment"),
+                  leading: Icon(Icons.payment),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text("Settings"),
+                  leading: Icon(Icons.settings),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text("Logout"),
+                  leading: Icon(Icons.exit_to_app),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
           backgroundColor: Colors.lightBlue,
           appBar: AppBar(
             centerTitle: true,
             title: Text('Social Cycle'),
             backgroundColor: Colors.blueGrey[900],
           ),
-
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -56,7 +87,6 @@ class MyApp2 extends StatelessWidget {
                 height: 20.0,
               ),
               RaisedButton(
-
                 child: new Text(
                   'De-Select Cycle',
                   style: TextStyle(
@@ -68,7 +98,6 @@ class MyApp2 extends StatelessWidget {
                 highlightColor: Colors.orange,
                 splashColor: Colors.yellow,
                 onPressed: tmpFunction,
-
               ),
             ],
           ),
