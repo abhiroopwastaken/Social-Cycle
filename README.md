@@ -1,6 +1,6 @@
 # Social Cycle
 
-A new Flutter application.
+A new interactive way of renting cycle inside your college campus.
 
 ## Getting Started
 
