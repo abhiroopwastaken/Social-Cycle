@@ -74,7 +74,9 @@ class _WelcomeBackPageState extends State<WelcomeBackPage> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyApp2(),
+                        builder: (context) => MyApp2(
+                          user: value.user,
+                        ),
                       ),
                     )
                   })

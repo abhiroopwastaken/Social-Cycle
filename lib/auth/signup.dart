@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'forgot_password_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   TextEditingController cmfPassword = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +63,16 @@ class _RegisterPageState extends State<RegisterPage> {
               .createUserWithEmailAndPassword(
                   email: email.text, password: password.text)
               .then((value) {
-            setState(() {
-              loading = false;
+            _db.collection("users").doc(value.user.uid).set({
+              "email": value.user.email,
+              "cycle": "",
+            }).then((value) {
+              setState(() {
+                loading = false;
+              });
+              _auth.signOut();
+              Navigator.pop(context);
             });
-            _auth.signOut();
-            Navigator.pop(context);
           }).catchError((error) {
             setState(() {
               loading = false;
