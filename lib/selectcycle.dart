@@ -105,20 +105,28 @@ class _SelectCycleState extends State<SelectCycle> {
                                                   .collection("users")
                                                   .doc(widget.user.uid)
                                                   .update({
-                                                "cycle": cycles[index]
-                                                    ["bikecode"]
+                                                "cycle": cycles[index].id
                                               }).then((value) {
+                                                _db
+                                                    .collection("cycles")
+                                                    .doc(cycles[index].id)
+                                                    .update({
+                                                  "available": false,
+                                                  "currentuser":
+                                                      widget.user.uid,
+                                                });
                                                 setState(() {
                                                   loading = false;
                                                 });
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MyApp2(
-                                                              user: widget.user,
-                                                            )));
                                               });
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => MyApp2(
+                                                    user: widget.user,
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             child: Text('Confirm'),
                                           ),

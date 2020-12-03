@@ -174,6 +174,10 @@ class _MyApp2State extends State<MyApp2> {
                           Map<String, dynamic> data = value.data();
                           if (data["cycle"] != "") {
                             _db
+                                .collection('cycles')
+                                .doc(data["cycle"])
+                                .update({"currentuser": "", "available": true});
+                            _db
                                 .collection("users")
                                 .doc(widget.user.uid)
                                 .update({"cycle": ""}).then((value) {
